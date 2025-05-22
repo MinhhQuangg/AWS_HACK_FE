@@ -5,13 +5,30 @@ module.exports = {
   mode: "jit",
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['"Fredoka One"', "cursive"],
+        body: ["Fredoka", "sans-serif"],
+        navbar: ['"Baloo 2"', "cursive"],
+      },
       colors: {
-        primary: "#FFD254",
-        secondary: "#E3E3E3",
-        tertiary: "#151030",
-        "black-100": "#333333",
-        "black-200": "#C0C0C0",
-        "white-100": "#fde7dd",
+        bg: {
+          light: "#ffffff",
+          dark: "#e1e1e1",
+        },
+        highlight: "#bcfefe",
+        primary: {
+          DEFAULT: "#0c5776",
+          dark: "#043043",
+        },
+        secondary: {
+          DEFAULT: "#2d99ae",
+          dark: "#27707f",
+        },
+        textgray: {
+          light: "#686868",
+          dark: "#565656",
+        },
+        buttonshadow: "#c4c4c4",
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
