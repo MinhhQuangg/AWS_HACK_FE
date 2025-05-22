@@ -15,5 +15,4 @@ export const Routes = () => {
       </RouteComponent>
     </BrowserRouter>
   );
-  s;
 };
