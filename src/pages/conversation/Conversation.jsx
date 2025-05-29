@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mic, MicOff } from "lucide-react";
-import MainNavbar from "./MainNavbar";
+import MainNavbar from "../../components/MainNavbar";
 import ConversationHeader from "./ConversationHeader";
 
 export default function RestaurantConversationPage() {

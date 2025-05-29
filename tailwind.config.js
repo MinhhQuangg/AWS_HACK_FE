@@ -16,6 +16,7 @@ module.exports = {
           dark: "#e1e1e1",
         },
         highlight: "#bcfefe",
+        shadowHighlight: "#62AEAE",
         primary: {
           DEFAULT: "#0c5776",
           dark: "#043043",
@@ -29,6 +30,7 @@ module.exports = {
           dark: "#565656",
         },
         buttonshadow: "#c4c4c4",
+        third: "#d2a11a",
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
@@ -37,7 +39,7 @@ module.exports = {
         xs: "560px",
         md: "892px",
         lg: "1024px",
-        xl: "1430px",
+        xl: "1230px",
         "2xl": "1536px",
       },
     },
