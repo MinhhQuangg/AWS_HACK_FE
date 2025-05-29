@@ -3,16 +3,23 @@ import {
   Route,
   Routes as RouteComponent,
 } from "react-router-dom";
-import Home from "../pages/Home";
 import Conversation from "../pages/conversation/Conversation";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
+import { AuthProvider } from "../context/authContext";
+import Landing from "../pages/home/landing/Landing";
 
 export const Routes = () => {
   return (
     <BrowserRouter>
-      <RouteComponent>
-        <Route path="/" element={<Home />} />
-        <Route path="/conversation" element={<Conversation />} />
-      </RouteComponent>
+      <AuthProvider>
+        <RouteComponent>
+          <Route path="/" element={<Landing />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/conversation" element={<Conversation />} />
+        </RouteComponent>
+      </AuthProvider>
     </BrowserRouter>
   );
 };
