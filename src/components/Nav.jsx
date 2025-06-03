@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
 
 const sections = [
@@ -10,14 +10,70 @@ const sections = [
 
 const Nav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const sectionIds = sections.filter((s) => !s.isExternal).map((s) => s.id);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5, // section should be at least 50% in view
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sectionIds.forEach((id) => {
+        const section = document.getElementById(id);
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
+
   return (
+    // <header
+    //   className={`${styles.paddingX} ${styles.paddingY} font-navbar bg-white shadow-[0_8px_12px_-4px_rgba(0,0,0,0.2)] relative z-50 sticky top-0`}
+    // >
     <header
-      className={`${styles.paddingX} ${styles.paddingY} font-navbar bg-white shadow-[0_8px_12px_-4px_rgba(0,0,0,0.2)] relative`}
+      className={`${styles.paddingX} ${styles.paddingY} font-navbar bg-white shadow-[0_8px_12px_-4px_rgba(0,0,0,0.2)] fixed top-0 left-0 w-full z-50`}
     >
       <nav
         className={`${styles.headerSubText} flex items-center justify-between mx-auto`}
       >
-        <div className={`text-primary font-bold`}>LOGO</div>
+        <div
+          className={`text-primary font-bold cursor-pointer`}
+          onClick={() => navigate("/")}
+        >
+          LOGO
+        </div>
+        {/* <div className="hidden 2xl:flex 2xl:space-x-24 lg:flex lg:space-x-16 xs:flex xs:space-x-12 ">
+          {sections.map(({ label, id, isExternal }) => (
+            <a
+              key={id}
+              href={isExternal ? id : `#${id}`}
+              onClick={() => {
+                if (!isExternal) setIsMobileMenuOpen(false);
+              }}
+              // className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
+              className="text-black hover:text-primary transition-colors 2xl:text-[30px] lg:text-[22px] md:text-[18px] sm:text-[14px] xs:text-[12px] text-[12px] lg:leading-[32px] cursor-pointer"
+            >
+              {label}
+            </a>
+          ))}
+        </div> */}
         <div className="hidden 2xl:flex 2xl:space-x-24 lg:flex lg:space-x-16 xs:flex xs:space-x-12 ">
           {sections.map(({ label, id, isExternal }) => (
             <a
@@ -26,7 +82,12 @@ const Nav = () => {
               onClick={() => {
                 if (!isExternal) setIsMobileMenuOpen(false);
               }}
-              className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
+              className={`transition-colors 2xl:text-[30px] lg:text-[22px] md:text-[18px] sm:text-[14px] xs:text-[12px] text-[12px] lg:leading-[32px] cursor-pointer
+      ${
+        activeSection === id
+          ? "text-primary border-b-2 border-primary"
+          : "text-black hover:text-primary"
+      }`}
             >
               {label}
             </a>

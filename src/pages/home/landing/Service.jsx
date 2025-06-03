@@ -54,7 +54,7 @@ const Service = () => {
       <div
         className={`${styles.headerText} text-center text-primary-dark md:mb-28 mb-10`}
       >
-        What do we do
+        What We Do
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-24 gap-14 md:max-w-[1300px] mx-auto">
@@ -71,7 +71,7 @@ const Service = () => {
             </div>
 
             <div
-              className={`${styles.sectionHeadText} text-bg-light font-bold mb-5`}
+              className={`${styles.sectionHeadText} text-bg-light mb-5`}
             >
               {title}
             </div>

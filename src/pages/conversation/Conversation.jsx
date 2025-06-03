@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Mic, MicOff } from "lucide-react";
 import MainNavbar from "../../components/MainNavbar";
 import ConversationHeader from "./ConversationHeader";
+import Button from "../../components/common/Button";
 
-export default function RestaurantConversationPage() {
+export default function Conversation() {
   const [isListening, setIsListening] = useState(false);
   const [notes, setNotes] = useState("Waiter's name is Clint |");
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
@@ -16,6 +17,18 @@ export default function RestaurantConversationPage() {
   const handleNotesChange = (e) => {
     setNotes(e.target.value);
   };
+
+  // mock AI suggestions
+  const suggestions = [
+    {
+      number: 1,
+      text: "Say hello and ask for your options.",
+    },
+    {
+      number: 2,
+      text: "Ask for details on the dish you like.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-bg-light font-body">
@@ -185,41 +198,25 @@ export default function RestaurantConversationPage() {
                   className="w-full h-16 sm:h-20 p-3 rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
                   placeholder="Ask AI for a suggestion on the conversation..."
                 />
-                <button className="mt-3 relative group">
-                  {/* Shadow layer */}
-                  <div className="absolute inset-0 bg-primary-dark rounded-2xl translate-y-2.5"></div>
-
-                  {/* Main button */}
-                  <div className="relative bg-primary px-4 py-4 rounded-2xl text-white flex items-center justify-center space-x-2 text-lg shadow-lg transform transition-all duration-100 group-active:translate-y-2.5">
-                    <span className="font-heading">AI Suggestion</span>
-                    <span className="text-yellow-300 text-xl">✨</span>
-                  </div>
-                </button>
+                <Button>AI Suggestion ✨</Button>
               </div>
 
               {/* Suggestion Cards */}
               <div className="space-y-3 sm:space-y-4">
-                <div className="bg-primary rounded-lg p-3 sm:p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-secondary rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
-                      1
+                {suggestions.map((suggestion, index) => (
+                  <div key={index} className="bg-primary rounded-lg p-3 sm:p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div
+                        className={`w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold text-sm sm:text-base`}
+                      >
+                        {suggestion.number}
+                      </div>
                     </div>
+                    <p className="text-white text-sm sm:text-base">
+                      {suggestion.text}
+                    </p>
                   </div>
-                  <p className="text-white text-sm sm:text-base">
-                    Say hello and ask for your options.
-                  </p>
-                </div>
-
-                <div className="bg-primary rounded-lg p-3 sm:p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-secondary rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
-                      2
-                    </div>
-                  </div>
-                  <p className="text-white text-sm sm:text-base">
-                    Ask for details on the dish you like.
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
           </div>

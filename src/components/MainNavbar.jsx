@@ -16,7 +16,7 @@ const MainNavbar = ({
 
   return (
     <header
-      className={`font-navbar bg-white lg:w-screen shadow-sm px-4 sm:px-6 py-4 relative ${className}`}
+      className={`font-navbar bg-white lg:w-screen shadow-sm px-4 sm:px-6 relative ${className}`}
     >
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
