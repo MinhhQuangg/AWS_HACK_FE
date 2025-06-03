@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
@@ -18,9 +18,17 @@ const AuthNav = () => {
     logout();
     navigate("/signin");
   };
+
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const path = window.location.pathname.replace(/^\/+/, "");
+    setActiveSection(path || "home");
+  }, []);
+
   return (
     <header
-      className={`${styles.paddingX} ${styles.paddingY} font-navbar bg-white shadow-[0_8px_12px_-4px_rgba(0,0,0,0.2)] relative`}
+      className={`${styles.paddingX} ${styles.paddingY} font-navbar bg-white shadow-[0_8px_12px_-4px_rgba(0,0,0,0.2)] fixed top-0 left-0 w-full z-50`}
     >
       <nav
         className={`${styles.headerSubText} flex items-center justify-between mx-auto`}
@@ -36,15 +44,21 @@ const AuthNav = () => {
             <a
               key={id}
               onClick={() => {
-                navigate(`/${id}`);
+                id == "home" ? navigate("/") : navigate(`/${id}`);
               }}
-              className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
+              // className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
+              className={`transition-colors 2xl:text-[30px] lg:text-[22px] md:text-[18px] sm:text-[14px] xs:text-[12px] text-[12px] lg:leading-[32px] cursor-pointer
+      ${
+        activeSection === id
+          ? "text-primary border-b-2 border-primary"
+          : "text-black hover:text-primary"
+      }`}
             >
               {label}
             </a>
           ))}
           <a
-            className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
+            className="transition-colors 2xl:text-[30px] lg:text-[22px] md:text-[18px] sm:text-[14px] xs:text-[12px] text-[12px] lg:leading-[32px] cursor-pointer hover:text-primary"
             onClick={handleLogout}
           >
             Logout

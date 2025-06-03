@@ -19,11 +19,21 @@ const Landing = () => {
       </div>
     );
   }
-  return (
-    <div className="flex flex-col justify-between min-h-screen scroll-smooth">
-      {user ? <AuthNav /> : <Nav />}
 
-      <div className={`${styles.paddingX} ${styles.paddingY}`}>
+  // mock user data
+  const mockUser = {
+    username: "mockuser"
+  }
+
+  return (
+    <div className="flex flex-col justify-between min-h-screen scroll-smooth overflow-hidden">
+      {/* {user ? <AuthNav /> : <Nav />} */}
+      {/* <Nav /> */}
+      <AuthNav />
+
+      <DashBoard username={mockUser.username} />
+
+      {/* <div className={`${styles.paddingX} pt-10 lg:pt-20`}>
         {user ? (
           <DashBoard username={user.username} />
         ) : (
@@ -40,7 +50,7 @@ const Landing = () => {
             </section>
           </>
         )}
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

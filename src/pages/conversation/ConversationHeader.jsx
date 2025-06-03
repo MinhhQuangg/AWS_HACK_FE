@@ -1,6 +1,7 @@
 import React from "react";
 import MainNavbar from "../../components/MainNavbar";
 import MobileActionButtons from "./MobileActionButtons";
+import AuthNav from "../../components/AuthNav";
 
 const ConversationHeader = ({
   showLeftSidebar,
@@ -9,10 +10,11 @@ const ConversationHeader = ({
   setShowRightSidebar,
 }) => {
   return (
-    <header className="bg-white shadow-sm px-4 sm:px-6 py-4 relative">
+    <header className="bg-white shadow-sm px-4 sm:px-6 relative">
       <nav className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Main Navigation */}
-        <MainNavbar />
+        {/* <MainNavbar /> */}
+        <AuthNav />
 
         {/* Mobile Action Buttons (Notes & AI Help) */}
         <MobileActionButtons
