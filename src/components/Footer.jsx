@@ -4,7 +4,7 @@ import footerBackground from "../assets/footer.png";
 
 const Footer = () => {
   return (
-    <div className="relative w-full -mt-20">
+    <div className="relative w-full -mt-20 -z-10">
       {/* Background Image */}
       <img
         src={footerBackground}

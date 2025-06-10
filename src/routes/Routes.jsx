@@ -9,6 +9,8 @@ import SignUp from "../pages/SignUp";
 import { AuthProvider } from "../context/authContext";
 import Landing from "../pages/home/landing/Landing";
 import Feedback from "../pages/Feedback";
+import ScenarioSelection from "../pages/scenario-selection/ScenarioSelection";
+import PastConversations from "../pages/past-conversations/PastConversations";
 
 export const Routes = () => {
   return (
@@ -19,6 +21,8 @@ export const Routes = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/conversation" element={<Conversation />} />
+          <Route path="/scenarios" element={<ScenarioSelection />} />
+          <Route path="/history" element={<PastConversations />} />
           <Route path="/feedback" element={<Feedback />} />
         </RouteComponent>
       </AuthProvider>
