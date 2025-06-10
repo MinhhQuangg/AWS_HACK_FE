@@ -6,7 +6,7 @@ import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import ScenarioGrid from "../../components/common/ScenarioGrid";
 
-const ScenarioSelection = () => {
+const PastConversations = () => {
   const user = { name: "abc" };
 
   return (
@@ -16,10 +16,10 @@ const ScenarioSelection = () => {
       <div className="mb-[50px]">
         <div className="flex flex-col justify-center items-center text-black px-4 text-center">
           <div className={`${styles.headerText} text-primary-dark`}>
-            Scenario Selection
+            Past Conversations
           </div>
           <div className={`${styles.headerSubText} text-primary`}>
-            Choose a social scenario to practice!
+            Review your past conversations
           </div>
         </div>
 
@@ -31,4 +31,4 @@ const ScenarioSelection = () => {
   );
 };
 
-export default ScenarioSelection;
+export default PastConversations;
