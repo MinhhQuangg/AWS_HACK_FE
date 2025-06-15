@@ -8,7 +8,7 @@ const Button = ({ children, className = "", ...props }) => {
       {...props}
     >
       {/* Shadow layer */}
-      <div className="absolute inset-0 bg-primary-dark rounded-2xl translate-y-2.5 transition-transform duration-100 group-active:translate-y-0.5" />
+      <div className="absolute inset-0 bg-primary-dark rounded-2xl translate-y-2.5 transition-transform duration-100  " />
 
       {/* Main button */}
       <div
