@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-polly": "^3.828.0",
+    "@aws-sdk/client-transcribe": "^3.828.0",
     "@react-oauth/google": "^0.12.2",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.9.0",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",
