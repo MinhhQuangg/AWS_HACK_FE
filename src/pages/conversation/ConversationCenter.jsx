@@ -6,7 +6,9 @@ const ConversationCenter = ({
   isSpeaking,
   onMicToggle,
   onSpeakToggle,
+  transcript,
 }) => {
+  console.log(transcript);
   return (
     <div className="flex-1 flex flex-col items-center justify-center bg-bg-dark relative px-4 sm:px-6 py-8 overflow-hidden">
       <ConversationHeader isListening={isListening} isSpeaking={isSpeaking} />
@@ -16,6 +18,12 @@ const ConversationCenter = ({
         isSpeaking={isSpeaking}
         onMicToggle={onMicToggle}
         onSpeakToggle={onSpeakToggle}
+        transcript={transcript}
+      />
+      <textarea
+        className="w-[50%] h-16 sm:h-20 p-3 rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
+        value={transcript}
+        placeholder="Your script will appear here"
       />
     </div>
   );

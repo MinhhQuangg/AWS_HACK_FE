@@ -89,6 +89,7 @@ export default function Conversation() {
             isSpeaking={isSpeaking}
             onMicToggle={handleMicToggle}
             onSpeakToggle={handleSpeakToggle}
+            transcript={transcript}
           />
         </div>
 

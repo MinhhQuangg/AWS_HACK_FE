@@ -1,3 +1,17 @@
+import {
+  TranscribeClient,
+  StartTranscriptionJobCommand,
+  GetTranscriptionJobCommand,
+} from "@aws-sdk/client-transcribe";
+
+const client = new TranscribeClient({
+  region: "us-east-2",
+  credentials: {
+    accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
+  },
+});
+
 // Check if AWS SDK is loaded
 const checkAWSSDK = () => {
   if (typeof window.AWS === "undefined") {
@@ -12,13 +26,12 @@ export const initializeAWS = () => {
   checkAWSSDK();
 
   const config = {
-    region: "us-east-1",
+    region: "us-east-2",
     accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
     secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
     signatureVersion: "v4",
   };
 
-  // Validate environment variables
   if (!config.accessKeyId || !config.secretAccessKey) {
     throw new Error(
       "AWS credentials not found. Please check your environment variables."
@@ -26,7 +39,7 @@ export const initializeAWS = () => {
   }
 
   window.AWS.config.update({
-    region: config.region,
+    region: "us-east-2",
     credentials: new window.AWS.Credentials({
       accessKeyId: config.accessKeyId,
       secretAccessKey: config.secretAccessKey,
@@ -36,14 +49,6 @@ export const initializeAWS = () => {
       timeout: 60000,
       connectTimeout: 10000,
     },
-  });
-
-  console.log("AWS Configuration:", {
-    region: window.AWS.config.region,
-    credentials: window.AWS.config.credentials
-      ? "Configured"
-      : "Not configured",
-    signatureVersion: window.AWS.config.signatureVersion,
   });
 };
 
@@ -62,7 +67,7 @@ export const uploadToS3 = async (audioBlob) => {
     }
 
     const s3 = new window.AWS.S3({
-      region: "us-east-1",
+      region: "us-east-2",
       credentials: new window.AWS.Credentials({
         accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
         secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
@@ -133,19 +138,9 @@ export const uploadToS3 = async (audioBlob) => {
 
 export const transcribeAudio = async (s3Uri) => {
   try {
-    checkAWSSDK();
-
-    // Check if TranscribeService is available
-    if (typeof window.AWS.TranscribeService !== "function") {
-      throw new Error(
-        "AWS TranscribeService not available. Please ensure you have the correct AWS SDK version."
-      );
-    }
-
-    const transcribeService = new window.AWS.TranscribeService();
     const jobName = `transcription-${Date.now()}`;
 
-    const params = {
+    const startParams = {
       TranscriptionJobName: jobName,
       LanguageCode: "en-US",
       MediaFormat: "webm",
@@ -156,7 +151,8 @@ export const transcribeAudio = async (s3Uri) => {
     };
 
     console.log("Starting transcription job:", jobName);
-    await transcribeService.startTranscriptionJob(params).promise();
+    const startCommand = new StartTranscriptionJobCommand(startParams);
+    await client.send(startCommand);
 
     return await pollTranscriptionJob(jobName);
   } catch (error) {
@@ -165,16 +161,20 @@ export const transcribeAudio = async (s3Uri) => {
   }
 };
 
-const pollTranscriptionJob = async (jobName, maxAttempts = 30) => {
-  const transcribeService = new window.AWS.TranscribeService();
+const pollTranscriptionJob = async (
+  jobName,
+  maxAttempts = 30,
+  delayMs = 2000
+) => {
   let attempts = 0;
 
   while (attempts < maxAttempts) {
     try {
-      const result = await transcribeService
-        .getTranscriptionJob({ TranscriptionJobName: jobName })
-        .promise();
+      const getCommand = new GetTranscriptionJobCommand({
+        TranscriptionJobName: jobName,
+      });
 
+      const result = await client.send(getCommand);
       const status = result.TranscriptionJob.TranscriptionJobStatus;
       console.log(`Transcription job status: ${status}`);
 
@@ -195,8 +195,7 @@ const pollTranscriptionJob = async (jobName, maxAttempts = 30) => {
         throw new Error(`Transcription job failed: ${failureReason}`);
       }
 
-      // Wait 2 seconds before polling again
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
       attempts++;
     } catch (error) {
       console.error("Error polling transcription job:", error);
@@ -232,149 +231,3 @@ export const synthesizeSpeech = async (text) => {
     throw new Error(`Speech synthesis failed: ${error.message}`);
   }
 };
-
-// const AWS_CONFIG = {
-//   region: "us-east-1",
-//   accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
-//   secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
-// };
-
-// // Initialize AWS configuration
-// export const initializeAWS = () => {
-//   window.AWS.config.update({
-//     region: "us-east-1",
-//     credentials: new window.AWS.Credentials({
-//       accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
-//       secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
-//     }),
-//     signatureVersion: "v4",
-//     httpOptions: {
-//       timeout: 60000,
-//       connectTimeout: 10000,
-//     },
-//   });
-
-//   console.log("AWS Configuration:", {
-//     region: window.AWS.config.region,
-//     credentials: window.AWS.config.credentials
-//       ? "Configured"
-//       : "Not configured",
-//     signatureVersion: window.AWS.config.signatureVersion,
-//   });
-// };
-
-// export const uploadToS3 = async (audioBlob) => {
-//   try {
-//     const s3 = new window.AWS.S3({
-//       region: "us-east-1",
-//       credentials: new window.AWS.Credentials({
-//         accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY_ID,
-//         secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_ACCESS_KEY,
-//       }),
-//       signatureVersion: "v4",
-//       httpOptions: {
-//         timeout: 60000,
-//         connectTimeout: 10000,
-//       },
-//     });
-
-//     const fileName = `audio-${Date.now()}.webm`;
-//     const uploadParams = {
-//       Bucket: import.meta.env.VITE_APP_S3_BUCKET_NAME,
-//       Key: fileName,
-//       Body: audioBlob,
-//       ContentType: "audio/webm",
-//       ServerSideEncryption: "AES256",
-//     };
-
-//     console.log("Starting S3 upload with params:", {
-//       bucket: uploadParams.Bucket,
-//       key: uploadParams.Key,
-//       contentType: uploadParams.ContentType,
-//       fileSize: audioBlob.size,
-//     });
-
-//     const upload = s3.upload(uploadParams);
-
-//     upload.on("httpUploadProgress", (progress) => {
-//       const percentComplete = Math.round(
-//         (progress.loaded / progress.total) * 100
-//       );
-//       console.log(`Upload progress: ${percentComplete}%`);
-//     });
-
-//     const result = await Promise.race([
-//       upload.promise(),
-//       new Promise((_, reject) =>
-//         setTimeout(() => reject(new Error("Upload timeout")), 60000)
-//       ),
-//     ]);
-
-//     console.log("S3 upload successful:", result.Location);
-//     return result.Location;
-//   } catch (error) {
-//     console.error("S3 upload error:", error);
-//     throw new Error(`Upload failed: ${error.message}`);
-//   }
-// };
-
-// export const transcribeAudio = async (s3Uri) => {
-//   // const transcribeService = new window.AWS.TranscribeService();
-//   const transcribeService = new window.AWS.TranscribeService();
-//   const jobName = `transcription-${Date.now()}`;
-
-//   const params = {
-//     TranscriptionJobName: jobName,
-//     LanguageCode: "en-US",
-//     MediaFormat: "webm",
-//     Media: {
-//       MediaFileUri: s3Uri,
-//     },
-//     OutputBucketName: import.meta.env.VITE_APP_S3_BUCKET_NAME,
-//   };
-
-//   await transcribeService.startTranscriptionJob(params).promise();
-//   return await pollTranscriptionJob(jobName);
-// };
-
-// const pollTranscriptionJob = async (jobName) => {
-//   const transcribeService = new window.AWS.TranscribeService();
-
-//   while (true) {
-//     try {
-//       const result = await transcribeService
-//         .getTranscriptionJob({ TranscriptionJobName: jobName })
-//         .promise();
-
-//       if (result.TranscriptionJob.TranscriptionJobStatus === "COMPLETED") {
-//         const transcriptUri =
-//           result.TranscriptionJob.Transcript.TranscriptFileUri;
-//         const response = await fetch(transcriptUri);
-//         const transcriptData = await response.json();
-//         return transcriptData.results.transcripts[0].transcript;
-//       } else if (result.TranscriptionJob.TranscriptionJobStatus === "FAILED") {
-//         throw new Error("Transcription job failed");
-//       }
-
-//       await new Promise((resolve) => setTimeout(resolve, 2000));
-//     } catch (error) {
-//       console.error("Error polling transcription job:", error);
-//       break;
-//     }
-//   }
-// };
-
-// export const synthesizeSpeech = async (text) => {
-//   const polly = new window.AWS.Polly();
-//   const params = {
-//     Text: text,
-//     OutputFormat: "mp3",
-//     VoiceId: "Joanna",
-//     Engine: "neural",
-//     LanguageCode: "en-US",
-//   };
-
-//   const result = await polly.synthesizeSpeech(params).promise();
-//   const audioBlob = new Blob([result.AudioStream], { type: "audio/mpeg" });
-//   return URL.createObjectURL(audioBlob);
-// };
