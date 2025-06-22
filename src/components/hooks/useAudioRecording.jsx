@@ -164,6 +164,7 @@ export const useAudioRecording = () => {
     isListening,
     isProcessing,
     transcript,
+    setTranscript,
     error,
     startRecording,
     stopRecording,
