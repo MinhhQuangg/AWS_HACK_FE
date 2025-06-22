@@ -18,6 +18,7 @@ export default function Conversation() {
     transcript,
     startRecording,
     stopRecording,
+    setTranscript,
     cleanup: cleanupRecording,
   } = useAudioRecording();
 
@@ -90,6 +91,7 @@ export default function Conversation() {
             onMicToggle={handleMicToggle}
             onSpeakToggle={handleSpeakToggle}
             transcript={transcript}
+            setTranscript={setTranscript}
           />
         </div>
 

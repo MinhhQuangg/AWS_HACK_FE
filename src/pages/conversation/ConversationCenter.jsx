@@ -1,5 +1,10 @@
 import React from "react";
 import { Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import {
+  showToastError,
+  showToastSuccess,
+} from "../../components/common/ShowToast";
+import axios from "axios";
 
 const ConversationCenter = ({
   isListening,
@@ -7,8 +12,21 @@ const ConversationCenter = ({
   onMicToggle,
   onSpeakToggle,
   transcript,
+  setTranscript,
 }) => {
-  console.log(transcript);
+  const handleSendTranscript = async (transcript) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/messages",
+        transcript
+      );
+      if (response.data.status === "success") {
+        showToastSuccess("Send Script Successfully");
+      }
+    } catch (err) {
+      showToastError(err.response?.data?.message);
+    }
+  };
   return (
     <div className="flex-1 flex flex-col items-center justify-center bg-bg-dark relative px-4 sm:px-6 py-8 overflow-hidden">
       <ConversationHeader isListening={isListening} isSpeaking={isSpeaking} />
@@ -21,10 +39,28 @@ const ConversationCenter = ({
         transcript={transcript}
       />
       <textarea
-        className="w-[50%] h-16 sm:h-20 p-3 rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
+        className="w-[30%] h-16 sm:h-20 p-3 mb-[10px] rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
         value={transcript}
         placeholder="Your script will appear here"
+        onChange={(e) => setTranscript(e.target.value)}
       />
+      <button
+        className="absolute top-[calc(100%-2.25rem)] left-0 w-full font-['Inter'] bg-primary-dark 
+    text-black font-bold text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] shadow-inner z-0 pointer-events-none"
+        aria-hidden="true"
+      >
+        &nbsp;
+      </button>
+
+      {/* Main Send button */}
+      <button
+        className="relative z-10 w-[10%] font-['Inter'] bg-primary text-white font-bold 
+    text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] transition-all duration-150 
+    active:translate-y-[2px] active:shadow-inner"
+        onClick={handleSendTranscript}
+      >
+        {"Send"}
+      </button>
     </div>
   );
 };
