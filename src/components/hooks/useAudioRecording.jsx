@@ -4,6 +4,7 @@ import {
   transcribeAudio,
   initializeAWS,
 } from "../../services/awsServices";
+import { showToastError } from "../common/ShowToast";
 
 export const useAudioRecording = () => {
   const [isListening, setIsListening] = useState(false);
@@ -129,6 +130,7 @@ export const useAudioRecording = () => {
 
       setTranscript(transcriptionText);
     } catch (error) {
+      showToastError(error.message);
       console.error("Transcription error:", error);
       setError(`Transcription failed: ${error.message}`);
     } finally {
