@@ -7,7 +7,6 @@ const sections = [
   { label: "Home", id: "home" },
   { label: "Scenarios", id: "scenarios" },
   { label: "History", id: "history" },
-  { label: "Profile", id: "profile" },
 ];
 
 const AuthNav = () => {

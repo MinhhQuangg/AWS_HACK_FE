@@ -5,6 +5,7 @@ import {
   showToastSuccess,
 } from "../../components/common/ShowToast";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ConversationCenter = ({
   isListening,
@@ -14,15 +15,14 @@ const ConversationCenter = ({
   transcript,
   setTranscript,
 }) => {
+  const { sessionId } = useParams();
   const handleSendTranscript = async (transcript) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/messages",
-        transcript
-      );
-      if (response.data.status === "success") {
-        showToastSuccess("Send Script Successfully");
-      }
+      const response = await axios.post("http://localhost:5000/api/messages", {
+        text: transcript,
+        sessionId,
+      });
+      console.log(response);
     } catch (err) {
       showToastError(err.response?.data?.message);
     }
@@ -44,20 +44,13 @@ const ConversationCenter = ({
         placeholder="Your script will appear here"
         onChange={(e) => setTranscript(e.target.value)}
       />
-      <button
-        className="absolute top-[calc(100%-2.25rem)] left-0 w-full font-['Inter'] bg-primary-dark 
-    text-black font-bold text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] shadow-inner z-0 pointer-events-none"
-        aria-hidden="true"
-      >
-        &nbsp;
-      </button>
 
       {/* Main Send button */}
       <button
         className="relative z-10 w-[10%] font-['Inter'] bg-primary text-white font-bold 
     text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] transition-all duration-150 
     active:translate-y-[2px] active:shadow-inner"
-        onClick={handleSendTranscript}
+        onClick={() => handleSendTranscript(transcript)}
       >
         {"Send"}
       </button>
