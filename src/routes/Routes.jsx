@@ -20,7 +20,7 @@ export const Routes = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/conversation" element={<Conversation />} />
+          <Route path="/conversation/:sessionId" element={<Conversation />} />
           <Route path="/scenarios" element={<ScenarioSelection />} />
           <Route path="/history" element={<PastConversations />} />
           <Route path="/feedback" element={<Feedback />} />

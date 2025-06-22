@@ -23,7 +23,7 @@ const PastConversations = () => {
           </div>
         </div>
 
-        <ScenarioGrid array={Array.from({ length: 6 })} />
+        {/* <ScenarioGrid array={Array.from({ length: 6 })} /> */}
       </div>
 
       <Footer />

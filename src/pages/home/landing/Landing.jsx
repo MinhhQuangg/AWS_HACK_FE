@@ -24,6 +24,7 @@ const Landing = () => {
   const mockUser = {
     username: "mockuser",
   };
+  console.log(user);
 
   return (
     <div className="flex flex-col justify-between min-h-screen scroll-smooth overflow-hidden">
@@ -34,7 +35,7 @@ const Landing = () => {
       <DashBoard username={mockUser.username} /> */}
       <div className={`${styles.paddingX} pt-10 lg:pt-20`}>
         {user ? (
-          <DashBoard username={user.username} />
+          <DashBoard username={user.username} userId={user.id} />
         ) : (
           <>
             <section id="home">

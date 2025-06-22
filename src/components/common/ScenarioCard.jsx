@@ -1,8 +1,11 @@
 import React from "react";
 
-const ScenarioCard = ({ title, description, difficulty }) => {
+const ScenarioCard = ({ title, description, difficulty, onClick, symbol }) => {
   return (
-    <div className="mt-4 relative w-full group cursor-pointer h-full">
+    <div
+      className="mt-4 relative w-full group cursor-pointer h-full"
+      onClick={onClick}
+    >
       {/* Shadow layer */}
       <div className="absolute inset-0 bg-buttonshadow rounded-xl translate-y-2 transition-transform duration-150" />
 
@@ -13,7 +16,9 @@ const ScenarioCard = ({ title, description, difficulty }) => {
         transition-all duration-150 group-active:translate-y-2 h-full"
       >
         {/* Image/Placeholder */}
-        <div className="w-24 h-20 sm:w-28 sm:h-24 bg-gray-300 rounded-lg flex-shrink-0" />
+        <div className="hidden xl:flex w-24 h-20 sm:w-28 sm:h-24 rounded-lg flex-shrink-0 items-center justify-center text-7xl leading-none">
+          {symbol}
+        </div>
 
         {/* Text Content */}
         <div className="flex flex-col justify-between flex-1">
