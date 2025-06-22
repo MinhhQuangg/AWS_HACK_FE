@@ -19,7 +19,7 @@ const ConversationCenter = ({
   const handleSendTranscript = async (transcript) => {
     try {
       const response = await axios.post("http://localhost:5000/api/messages", {
-        text: transcript,
+        message: transcript,
         sessionId,
       });
       console.log(response);
