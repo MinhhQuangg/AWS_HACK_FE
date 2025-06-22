@@ -3,6 +3,10 @@ import {
   StartTranscriptionJobCommand,
   GetTranscriptionJobCommand,
 } from "@aws-sdk/client-transcribe";
+import {
+  showToastError,
+  showToastSuccess,
+} from "../components/common/ShowToast";
 
 const client = new TranscribeClient({
   region: "us-east-2",
@@ -151,12 +155,14 @@ export const transcribeAudio = async (s3Uri) => {
     };
 
     console.log("Starting transcription job:", jobName);
+    showToastSuccess("Starting transcription job");
     const startCommand = new StartTranscriptionJobCommand(startParams);
     await client.send(startCommand);
 
     return await pollTranscriptionJob(jobName);
   } catch (error) {
     console.error("Transcription error:", error);
+    showToastError(error.message);
     throw new Error(`Transcription failed: ${error.message}`);
   }
 };
@@ -176,9 +182,10 @@ const pollTranscriptionJob = async (
 
       const result = await client.send(getCommand);
       const status = result.TranscriptionJob.TranscriptionJobStatus;
-      console.log(`Transcription job status: ${status}`);
+      showToastSuccess(`Transcription job status: ${status}`);
 
       if (status === "COMPLETED") {
+        showToastSuccess("Your transcrption is available in text box");
         const transcriptUri =
           result.TranscriptionJob.Transcript.TranscriptFileUri;
         const response = await fetch(transcriptUri);
