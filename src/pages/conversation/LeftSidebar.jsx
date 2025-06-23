@@ -5,6 +5,7 @@ import {
   showToastError,
   showToastSuccess,
 } from "../../components/common/ShowToast";
+import { useAuth } from "../../context/authContext";
 const ScenarioTipsAndPhrases = {
   "introduce-yourself": {
     context: {
@@ -235,6 +236,7 @@ const LeftSidebar = ({
   setNotes,
   scenario,
 }) => {
+  const { user } = useAuth();
   const { sessionId } = useParams();
   const navigate = useNavigate();
 
@@ -263,7 +265,17 @@ const LeftSidebar = ({
       // showToastSuccess("Your feedback is generated. Please wait!");
       // setNotes(response?.data?.feedback?.feedback);
       // speakText(response?.data?.feedback?.feedback);
-      navigate(`/feedback/${sessionId}`);
+      const response = await axios.put(
+        `http://localhost:5000/api/sessions/${user.id}/${sessionId}`,
+        {
+          endTime: new Date().toISOString(), // send current time in ISO format
+        }
+      );
+      if (response.status === 200) {
+        showToastSuccess("Session ended successfully.");
+        console.log("Updated session:", response.data);
+        navigate(`/feedback/${sessionId}`);
+      }
     } catch (error) {
       console.error("Failed to fetch feedback:", error);
       showToastError("Failed to fetch session feedback.");

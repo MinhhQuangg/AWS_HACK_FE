@@ -13,7 +13,7 @@ const DashBoard = ({ username, userId }) => {
     const fetchLastScenario = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/sessions/${userId}`
+          `http://localhost:5000/api/sessions/user/${userId}`
         );
         setAllScenario(response?.data);
       } catch (err) {
