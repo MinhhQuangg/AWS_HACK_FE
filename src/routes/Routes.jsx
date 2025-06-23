@@ -23,7 +23,7 @@ export const Routes = () => {
           <Route path="/conversation/:sessionId" element={<Conversation />} />
           <Route path="/scenarios" element={<ScenarioSelection />} />
           <Route path="/history" element={<PastConversations />} />
-          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/feedback/:sessionId" element={<Feedback />} />
         </RouteComponent>
       </AuthProvider>
     </BrowserRouter>

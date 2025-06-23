@@ -1,14 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AIAvatar } from "../assets/styles";
 import AuthNav from "../components/AuthNav";
 import Footer from "../components/Footer";
 import { styles } from "../styles";
+import {
+  showToastError,
+  showToastSuccess,
+} from "../components/common/ShowToast";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+
+import { Volume2 } from "lucide-react";
+import { useTextToSpeech } from "../components/hooks/useTextToSpeech";
 
 const Feedback = () => {
+  const [notes, setNotes] = useState("");
+  const [scenarioId, setScenarioId] = useState(null);
+  const { sessionId } = useParams();
+  const [loading, setLoading] = useState(false);
+  const { speakText } = useTextToSpeech();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const fetchFeedback = async () => {
+      setLoading(true); // start loading
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/feedbacks/${sessionId}`
+        );
+        const feedbackText = response?.data?.feedback?.feedback;
+        showToastSuccess("Your feedback is generated. Please wait!");
+        setNotes(feedbackText);
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      } finally {
+        setLoading(false); // end loading regardless of success/error
+      }
+    };
+
+    fetchFeedback();
+  }, [sessionId]);
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/sessions/session/${sessionId}`
+        );
+        setScenarioId(res?.data?.scenarioId);
+      } catch (err) {
+        console.error("Failed to fetch session data:", err);
+        showToastError("Unable to load session");
+      }
+    };
+
+    if (sessionId) {
+      fetchSessionData();
+    }
+  }, [sessionId]);
+  const handleSuggestionClick = (suggestionText) => {
+    speakText(suggestionText);
+  };
+
   return (
     <div className="flex flex-col justify-between xl:gap-20 md:gap-32 sm:gap-40 gap-48">
       <AuthNav />
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 mt-[50px]">
         <img
           src={AIAvatar}
           key="Avatar"
@@ -32,11 +90,29 @@ const Feedback = () => {
           </div>
           <div className="col-span-3 flex flex-col justify-between">
             <div className={`${styles.sectionHeadText} font-['Fredoka']`}>
-              Ordering at a restaurant
+              {scenarioId &&
+                scenarioId
+                  .split("-")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
             </div>
             <div className={`${styles.sectionSubText} `}>
-              You met Clint, ordered chicken, and asked about the restaurant.
-              View conversation log in History.
+              {loading ? (
+                <div className="text-left text-gray-500">
+                  Loading feedback...
+                </div>
+              ) : (
+                notes
+              )}
+              {!loading && notes && (
+                <button
+                  onClick={() => handleSuggestionClick(notes)}
+                  aria-label="Play feedback audio"
+                  className="p-2 rounded hover:bg-gray-200"
+                >
+                  <Volume2 className="w-4 h-4 opacity-70" />
+                </button>
+              )}
             </div>
             <div className={`${styles.sectionSubText} text-right`}>
               05/13/2025
@@ -45,20 +121,20 @@ const Feedback = () => {
         </div>
         <div className="lg:w-[42%] sm:w-[50%] w-[60%] mx-auto flex gap-3 justify-center items-center mt-5">
           {/* 'Good' as button-styled div */}
-          <div className="w-full text-center font-['Inter'] bg-[#44C760] font-bold text-[1.15rem] lg:text-[1.35rem] md:py-3 py-1 rounded-[10px] transition-all duration-150">
-            Good
-          </div>
 
           {/* 'Get Started' button with shadow/depth */}
-          <div className="relative w-full">
+          <div className="relative w-[50%]">
             {/* Background shadow layer */}
             <button className="absolute top-2 left-1/2 -translate-x-1/2 w-full font-['Inter'] bg-primary-dark text-black font-bold text-[1.15rem] lg:text-[1.35rem] md:py-3 py-1 rounded-[10px] shadow-inner z-0 pointer-events-none">
               &nbsp;
             </button>
 
             {/* Foreground button */}
-            <button className="relative z-10 left-1/2 -translate-x-1/2 w-full font-['Inter'] bg-primary text-white font-bold text-[1.15rem] lg:text-[1.35rem] md:py-3 py-1 rounded-[10px] transition-all duration-150 active:translate-y-[2px] active:shadow-inner">
-              Review
+            <button
+              className="relative z-10 left-1/2 -translate-x-1/2 w-full font-['Inter'] bg-primary text-white font-bold text-[1.15rem] lg:text-[1.35rem] md:py-3 py-1 rounded-[10px] transition-all duration-150 active:translate-y-[2px] active:shadow-inner"
+              onClick={() => navigate("/")}
+            >
+              Homepage
             </button>
           </div>
         </div>

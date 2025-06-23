@@ -18,9 +18,6 @@ const ScenarioTipsAndPhrases = {
       "Mention your relevant experience",
       "Maintain good posture and eye contact",
       "Practice your introduction beforehand",
-      "Smile genuinely to appear approachable",
-      "Use a firm handshake if appropriate",
-      "Tailor your introduction to the specific role or event",
     ],
     phrases: [
       "Hello, my name is...",
@@ -28,9 +25,6 @@ const ScenarioTipsAndPhrases = {
       "I have experience in...",
       "Nice to meet you!",
       "I’ve recently worked on projects involving...",
-      "My background is in...",
-      "I’m passionate about...",
-      "I’m looking forward to learning more about this opportunity.",
     ],
   },
 
@@ -239,7 +233,6 @@ const LeftSidebar = ({
   transcript,
   notes,
   setNotes,
-  speakText,
   scenario,
 }) => {
   const { sessionId } = useParams();
@@ -257,19 +250,20 @@ const LeftSidebar = ({
   //     showToastError("Failed to fetch session feedback.");
   //   }
   // };
-  const handleEndSession = () => {
-    showToastSuccess("Session ended. Feedback fetched!");
-    navigate("/");
-  };
-  const handleFeedback = async () => {
+  // const handleEndSession = () => {
+  //   showToastSuccess("Session ended. Feedback fetched!");
+  //   navigate("/");
+  // };
+  const handleEndSession = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/feedbacks/${sessionId}`
-      );
+      // const response = await axios.get(
+      //   `http://localhost:5000/api/feedbacks/${sessionId}`
+      // );
       // console.log("Feedback:", response?.data?.feedback?.feedback);
-      setNotes(response?.data?.feedback?.feedback);
-      speakText(response?.data?.feedback?.feedback);
-      showToastSuccess("Your feedback is generated. Please wait!");
+      // showToastSuccess("Your feedback is generated. Please wait!");
+      // setNotes(response?.data?.feedback?.feedback);
+      // speakText(response?.data?.feedback?.feedback);
+      navigate(`/feedback/${sessionId}`);
     } catch (error) {
       console.error("Failed to fetch feedback:", error);
       showToastError("Failed to fetch session feedback.");
@@ -303,7 +297,7 @@ const LeftSidebar = ({
         <NotesSection
           notes={notes}
           setNotes={setNotes}
-          handleFeedback={handleFeedback}
+          // handleFeedback={handleFeedback}
         />
         <TipsSection scenario={scenario} />
         <CommonPhrasesSection scenario={scenario} />
@@ -390,23 +384,21 @@ const TranscriptSection = ({ transcript }) => (
   </div>
 );
 
-const NotesSection = ({ notes, setNotes, handleFeedback }) => (
+const NotesSection = ({ notes, setNotes }) => (
   <div className="mb-6 sm:mb-8">
-    <h3 className="text-lg sm:text-xl font-bold mb-4 underline">
-      Your feedback
-    </h3>
+    <h3 className="text-lg sm:text-xl font-bold mb-4 underline">Your Notes</h3>
     <textarea
       value={notes}
       onChange={(e) => setNotes(e.target.value)}
       className="w-full h-24 sm:h-32 p-3 bg-white text-black rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-highlight text-sm sm:text-base"
-      placeholder="Your feed back will show here"
+      placeholder="Type in your notes"
     />
-    <button
+    {/* <button
       className=" w-full mt-4 bg-primary text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
       onClick={handleFeedback}
     >
       Show Feedback
-    </button>
+    </button> */}
   </div>
 );
 

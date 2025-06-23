@@ -82,14 +82,15 @@ export default function Conversation() {
         sessionId,
       });
 
-      // speakText(
-      //   "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-      // );
+      // console.log(response?.data?.audioUrl);
       // const audioUrl = response?.data?.audioUrl;
 
       // if (audioUrl) {
-      //   speakText(audioUrl);
+      //   const audio = new Audio(audioUrl);
+      //   await audio.play();
+      //   console.log("Audio is playing");
       // }
+      // If speakText is another audio playback, consider timing here:
       speakText(response?.data?.text?.message);
     } catch (err) {
       showToastError(err.response?.data?.message);
