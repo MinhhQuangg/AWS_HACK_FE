@@ -428,9 +428,8 @@ const TipsSection = ({ scenario }) => {
 };
 
 const CommonPhrasesSection = ({ scenario }) => {
-  console.log(scenario);
   const phrases = ScenarioTipsAndPhrases[scenario]?.phrases || [];
-  console.log(phrases);
+
   return (
     <div className="mb-6 sm:mb-8">
       <h3 className="text-lg sm:text-xl font-bold mb-4 underline">

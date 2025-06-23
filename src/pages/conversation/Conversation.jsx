@@ -34,10 +34,9 @@ export default function Conversation() {
     const fetchSessionData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/sessions/${sessionId}`
+          `http://localhost:5000/api/sessions/session/${sessionId}`
         );
         setScenarioId(res?.data?.scenarioId);
-        console.log(res?.data?.scenarioId);
       } catch (err) {
         console.error("Failed to fetch session data:", err);
         showToastError("Unable to load session");
