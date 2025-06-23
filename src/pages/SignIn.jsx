@@ -12,6 +12,7 @@ import {
   showToastSuccess,
 } from "../components/common/ShowToast";
 import { useAuth } from "../context/authContext";
+import logo from "../assets/aws_voice_logo.png";
 
 const SignIn = () => {
   const formContext = useForm();
