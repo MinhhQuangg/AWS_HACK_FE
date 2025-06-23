@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import logo from "../assets/aws_voice_logo.png"
 
 const sections = [
   { label: "Home", id: "home" },
@@ -33,10 +34,13 @@ const AuthNav = () => {
         className={`${styles.headerSubText} flex items-center justify-between mx-auto`}
       >
         <div
-          className={`text-primary font-bold cursor-pointer`}
+          className={`text-primary font-bold cursor-pointer flex items-center justify-center gap-2`}
           onClick={() => navigate("/")}
         >
-          LOGO
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="" className="h-10" />
+          </div>
+          <div className="text-center">SocialSim</div>
         </div>
         <div className="hidden 2xl:flex 2xl:space-x-24 lg:flex lg:space-x-16 xs:flex xs:space-x-12 ">
           {sections.map(({ label, id }) => (

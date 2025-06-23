@@ -4,6 +4,7 @@ import {
   showToastError,
   showToastSuccess,
 } from "../../components/common/ShowToast";
+import Button from "../../components/common/Button";
 
 const ConversationCenter = ({
   isListening,
@@ -15,7 +16,7 @@ const ConversationCenter = ({
   sendTranscript,
 }) => {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center bg-bg-dark relative px-4 sm:px-6 py-8 overflow-hidden">
+    <div className="pt-[100px] flex-1 flex flex-col items-center justify-center bg-bg-dark relative px-4 sm:px-6 py-8 overflow-auto">
       <ConversationHeader isListening={isListening} isSpeaking={isSpeaking} />
       <RobotAvatar />
       <ControlButtons
@@ -25,22 +26,19 @@ const ConversationCenter = ({
         onSpeakToggle={onSpeakToggle}
         transcript={transcript}
       />
-      <textarea
-        className="w-[30%] h-16 sm:h-20 p-3 mb-[10px] rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
-        value={transcript}
-        placeholder="Your script will appear here"
-        onChange={(e) => setTranscript(e.target.value)}
-      />
+      <div className="flex justify-center items-center gap-5">
+        <div>
+          <textarea
+            className="w-full h-[100px] p-3 mb-[10px] rounded-lg bg-bg-light text-textgray-dark resize-none text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-highlight"
+            value={transcript}
+            placeholder="Your script will appear here"
+            onChange={(e) => setTranscript(e.target.value)}
+          />
+        </div>
 
-      {/* Main Send button */}
-      <button
-        className="relative z-10 w-[10%] font-['Inter'] bg-primary text-white font-bold 
-    text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] transition-all duration-150 
-    active:translate-y-[2px] active:shadow-inner"
-        onClick={() => sendTranscript(transcript)}
-      >
-        {"Send"}
-      </button>
+        {/* Main Send button */}
+        <Button onClick={() => sendTranscript(transcript)}>Send</Button>
+      </div>
     </div>
   );
 };

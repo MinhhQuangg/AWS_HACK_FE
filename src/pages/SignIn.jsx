@@ -78,16 +78,13 @@ const SignIn = () => {
     <div className="flex justify-center items-center h-screen relative w-full">
       <div className="absolute top-5 left-5 lg:top-10 lg:left-10">
         <div
-          className={`${styles.headerSubText} flex items-center text-primary cursor-pointer`}
+          className={`text-primary font-bold cursor-pointer flex items-center justify-center gap-2`}
           onClick={() => navigate("/")}
         >
-          LOGO
-          {/* <img
-            src={logo}
-            alt="Logo"
-            className="cursor-pointer w-[53px] h-[50px]"
-            onClick={() => navigate("/")}
-          /> */}
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="" className="h-10" />
+          </div>
+          <div className="text-center">SocialSim</div>
         </div>
       </div>
       <div className="flex flex-col w-[80%] max-w-[500px] 2xl:gap-10 xl:gap-10 lg:gap-8 md:gap-6 xs:gap-4 gap-2">
