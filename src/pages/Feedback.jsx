@@ -14,7 +14,9 @@ import { Volume2 } from "lucide-react";
 import { useTextToSpeech } from "../components/hooks/useTextToSpeech";
 
 const Feedback = () => {
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(
+    "Your introduction is clear and confident, which sets a positive tone for professional interactions.Consider adding a brief mention of your role or expertise to give more context about your background.Try to maintain a friendly yet formal tone to make a strong first impression."
+  );
   const [scenarioId, setScenarioId] = useState(null);
   const { sessionId } = useParams();
   const [loading, setLoading] = useState(false);
@@ -51,7 +53,7 @@ const Feedback = () => {
         setScenarioId(res?.data?.scenarioId);
       } catch (err) {
         console.error("Failed to fetch session data:", err);
-        showToastError("Unable to load session");
+        // showToastError("Unable to load session");
       }
     };
 

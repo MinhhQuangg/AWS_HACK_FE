@@ -8,18 +8,29 @@ import ScenarioGrid from "../../components/common/ScenarioGrid";
 import { useState } from "react";
 const mockSessions = [
   {
+    id: "0",
+    title: "Introducing yourself professionally",
+    description:
+      "Practice giving a short, confident introduction during an interview.",
+    feedback:
+      "Your introduction is clear and confident, which sets a positive tone for professional interactions.Consider adding a brief mention of your role or expertise to give more context about your background.Try to maintain a friendly yet formal tone to make a strong first impression.",
+    date: "2025-06-23",
+  },
+  {
     id: "1",
     title: "Introducing yourself professionally",
     description:
       "Practice giving a short, confident introduction during an interview.",
-    feedback: "Great confidence shown, try to slow down a bit.",
+    feedback:
+      "You demonstrated great confidence in your introduction, which is key to making a positive first impression during interviews. To improve even further, try to slow your speech a little bit to ensure clarity and help the listener absorb your message better. Adding a brief overview of your current role or area of expertise can also provide helpful context. Finally, maintain a balance between professionalism and friendliness to come across as approachable yet competent.",
     date: "2025-06-20",
   },
   {
     id: "2",
     title: "Describing your strengths",
     description: "Talk about your strengths and real examples.",
-    feedback: "Good examples, add more details on teamwork.",
+    feedback:
+      "You did a good job providing concrete examples to illustrate your strengths, which makes your claims more believable and relatable. To strengthen your answer, consider adding more details about how you collaborate with others, especially in team settings. Highlight specific instances where your teamwork made a difference and how you contributed to achieving a common goal. This will showcase not only your individual skills but also your ability to work well within a group.",
     date: "2025-06-18",
   },
   {
@@ -27,28 +38,32 @@ const mockSessions = [
     title: "Answering challenge question",
     description:
       "Explain a problem you faced and how you solved it to show resilience.",
-    feedback: "Strong problem-solving skills, improve clarity.",
+    feedback:
+      "Your ability to describe a challenge and your approach to solving it shows strong problem-solving skills and resilience, which are highly valued traits. To make your response even more impactful, focus on improving the clarity of your explanation. Break down the problem and solution into clear, easy-to-follow steps, and avoid overly technical or complex language unless necessary. This will ensure your listener fully understands the situation and your valuable contribution.",
     date: "2025-06-15",
   },
   {
     id: "4",
     title: "Explaining job fit",
     description: "Explain how your skills match the job.",
-    feedback: "Try to be more specific with examples.",
+    feedback:
+      "You conveyed a general understanding of how your skills match the job requirements, which is a good start. However, try to be more specific by citing concrete examples of your past experiences that directly relate to the key responsibilities of the position. Demonstrating a clear connection between your abilities and what the job demands will make your fit more convincing and memorable to the interviewer.",
     date: "2025-06-10",
   },
   {
     id: "5",
     title: "Asking interview questions",
     description: "Prepare polite, smart questions for the interviewer.",
-    feedback: "Good questions, but ask more about company culture.",
+    feedback:
+      "You prepared some thoughtful questions, which shows your interest in the role and company. To take this a step further, try to ask more questions about the company culture, team dynamics, and opportunities for growth. These types of questions indicate you are thinking about how you will fit within the organization long-term and can help you gather information to determine if the company is the right place for you.",
     date: "2025-06-08",
   },
   {
     id: "6",
     title: "Meeting classmate during lunch",
     description: "Practice introducing yourself and making small talk.",
-    feedback: "Friendly tone, try to ask open-ended questions.",
+    feedback:
+      "You used a friendly and approachable tone, which is great for casual conversations like meeting classmates. To enhance your small talk skills, try to incorporate more open-ended questions that invite your conversation partner to share more about themselves. This can lead to richer discussions and help build stronger connections. Also, showing genuine interest in their responses will make your interactions feel more natural and engaging.",
     date: "2025-06-05",
   },
 ];
