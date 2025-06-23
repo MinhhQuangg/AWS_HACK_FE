@@ -6,8 +6,12 @@ import ConversationCenter from "./ConversationCenter";
 import { useAudioRecording } from "../../components/hooks/useAudioRecording";
 import { useTextToSpeech } from "../../components/hooks/useTextToSpeech";
 import { initializeAWS } from "../../services/awsServices";
+import { showToastError } from "../../components/common/ShowToast";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function Conversation() {
+  const { sessionId } = useParams();
   const [notes, setNotes] = useState("Waiter's name is Clint |");
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
@@ -52,6 +56,26 @@ export default function Conversation() {
   const handleSuggestionClick = (suggestionText) => {
     speakText(suggestionText);
   };
+  const handleSendTranscript = async (transcript) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/messages", {
+        message: transcript,
+        sessionId,
+      });
+
+      // speakText(
+      //   "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      // );
+      // const audioUrl = response?.data?.audioUrl;
+
+      // if (audioUrl) {
+      //   speakText(audioUrl);
+      // }
+      speakText(response?.data?.text?.message);
+    } catch (err) {
+      showToastError(err.response?.data?.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-bg-light font-body overflow-hidden">
@@ -92,6 +116,7 @@ export default function Conversation() {
             onSpeakToggle={handleSpeakToggle}
             transcript={transcript}
             setTranscript={setTranscript}
+            sendTranscript={handleSendTranscript}
           />
         </div>
 

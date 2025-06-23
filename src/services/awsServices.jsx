@@ -221,7 +221,9 @@ export const synthesizeSpeech = async (text) => {
       throw new Error("No text provided for speech synthesis");
     }
 
-    const polly = new window.AWS.Polly();
+    const polly = new window.AWS.Polly({
+      region: "us-east-1", // Change from us-east-2 to us-east-1
+    });
     const params = {
       Text: text,
       OutputFormat: "mp3",

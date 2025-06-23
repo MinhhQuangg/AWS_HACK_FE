@@ -5,18 +5,27 @@ export const useTextToSpeech = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const audioElementRef = useRef(null);
 
-  const speakText = async (text) => {
-    if (!text.trim()) return;
+  const speakText = async (input) => {
+    if (!input.trim()) return;
+
+    let audioUrl = "";
 
     try {
       setIsSpeaking(true);
-      const audioUrl = await synthesizeSpeech(text);
+
+      if (input.startsWith("http")) {
+        audioUrl = input; // it's an audio URL from S3
+      } else {
+        audioUrl = await synthesizeSpeech(input); // fallback to Polly
+      }
 
       if (audioElementRef.current) {
         audioElementRef.current.src = audioUrl;
         audioElementRef.current.onended = () => {
           setIsSpeaking(false);
-          URL.revokeObjectURL(audioUrl);
+          if (!audioUrl.startsWith("http")) {
+            URL.revokeObjectURL(audioUrl); // only for blob URLs
+          }
         };
         await audioElementRef.current.play();
       }

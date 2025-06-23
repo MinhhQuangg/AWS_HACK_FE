@@ -4,8 +4,6 @@ import {
   showToastError,
   showToastSuccess,
 } from "../../components/common/ShowToast";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 
 const ConversationCenter = ({
   isListening,
@@ -14,19 +12,8 @@ const ConversationCenter = ({
   onSpeakToggle,
   transcript,
   setTranscript,
+  sendTranscript,
 }) => {
-  const { sessionId } = useParams();
-  const handleSendTranscript = async (transcript) => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/messages", {
-        message: transcript,
-        sessionId,
-      });
-      console.log(response);
-    } catch (err) {
-      showToastError(err.response?.data?.message);
-    }
-  };
   return (
     <div className="flex-1 flex flex-col items-center justify-center bg-bg-dark relative px-4 sm:px-6 py-8 overflow-hidden">
       <ConversationHeader isListening={isListening} isSpeaking={isSpeaking} />
@@ -50,7 +37,7 @@ const ConversationCenter = ({
         className="relative z-10 w-[10%] font-['Inter'] bg-primary text-white font-bold 
     text-[1.15rem] lg:text-[1.35rem] py-2 rounded-[10px] transition-all duration-150 
     active:translate-y-[2px] active:shadow-inner"
-        onClick={() => handleSendTranscript(transcript)}
+        onClick={() => sendTranscript(transcript)}
       >
         {"Send"}
       </button>
