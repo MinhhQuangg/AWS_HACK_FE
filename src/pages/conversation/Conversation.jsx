@@ -12,9 +12,10 @@ import axios from "axios";
 
 export default function Conversation() {
   const { sessionId } = useParams();
-  const [notes, setNotes] = useState("Waiter's name is Clint |");
+  const [notes, setNotes] = useState("");
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
   const [showRightSidebar, setShowRightSidebar] = useState(false);
+  const [scenarioId, setScenarioId] = useState(null);
 
   // Custom hooks
   const {
@@ -28,6 +29,25 @@ export default function Conversation() {
 
   const { isSpeaking, audioElementRef, speakText, stopSpeaking } =
     useTextToSpeech();
+
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/sessions/${sessionId}`
+        );
+        setScenarioId(res?.data?.scenarioId);
+        console.log(res?.data?.scenarioId);
+      } catch (err) {
+        console.error("Failed to fetch session data:", err);
+        showToastError("Unable to load session");
+      }
+    };
+
+    if (sessionId) {
+      fetchSessionData();
+    }
+  }, [sessionId]);
 
   useEffect(() => {
     initializeAWS();
@@ -95,6 +115,8 @@ export default function Conversation() {
           transcript={transcript}
           notes={notes}
           setNotes={setNotes}
+          speakText={speakText}
+          scenario={scenarioId}
         />
 
         {/* Mobile Overlay Background */}
@@ -124,6 +146,7 @@ export default function Conversation() {
           showRightSidebar={showRightSidebar}
           setShowRightSidebar={setShowRightSidebar}
           onSuggestionClick={handleSuggestionClick}
+          scenario={scenarioId}
         />
 
         {/* Mobile Overlay Background for Right Sidebar */}
