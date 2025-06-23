@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
+import logo from "../assets/aws_voice_logo.png"
 
 const sections = [
   { label: "Home", id: "home", isExternal: false },
@@ -54,26 +55,14 @@ const Nav = () => {
         className={`${styles.headerSubText} flex items-center justify-between mx-auto`}
       >
         <div
-          className={`text-primary font-bold cursor-pointer`}
+          className={`text-primary font-bold cursor-pointer flex items-center justify-center gap-2`}
           onClick={() => navigate("/")}
         >
-          LOGO
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="" className="h-10" />
+          </div>
+          <div className="text-center">SocialSim</div>
         </div>
-        {/* <div className="hidden 2xl:flex 2xl:space-x-24 lg:flex lg:space-x-16 xs:flex xs:space-x-12 ">
-          {sections.map(({ label, id, isExternal }) => (
-            <a
-              key={id}
-              href={isExternal ? id : `#${id}`}
-              onClick={() => {
-                if (!isExternal) setIsMobileMenuOpen(false);
-              }}
-              // className="text-primary-dark hover:text-primary transition-colors 2xl:text-[35px] lg:text-[27px] md:text-[20px] sm:text-[16px] xs:text-[14px] text-[14px] lg:leading-[40px] cursor-pointer"
-              className="text-black hover:text-primary transition-colors 2xl:text-[30px] lg:text-[22px] md:text-[18px] sm:text-[14px] xs:text-[12px] text-[12px] lg:leading-[32px] cursor-pointer"
-            >
-              {label}
-            </a>
-          ))}
-        </div> */}
         <div className="hidden 2xl:flex 2xl:space-x-24 lg:flex lg:space-x-16 xs:flex xs:space-x-12 ">
           {sections.map(({ label, id, isExternal }) => (
             <a
