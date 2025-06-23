@@ -85,7 +85,7 @@ const SignIn = () => {
           <div className="flex items-center justify-center">
             <img src={logo} alt="" className="h-10" />
           </div>
-          <div className="text-center">SocialSim</div>
+          <div className="text-center font-heading text-lg">SocialSim</div>
         </div>
       </div>
       <div className="flex flex-col w-[80%] max-w-[500px] 2xl:gap-10 xl:gap-10 lg:gap-8 md:gap-6 xs:gap-4 gap-2">
